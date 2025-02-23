@@ -13,19 +13,19 @@ const ProjectSection: NextPage<Props> = ({}) => {
     },
     {
       id: 2,
-      title: "Project Beta",
+      title: "Waysbook",
       description: "Building a scalable React application with best practices.",
       image: "/images/project2.jpg",
     },
     {
       id: 3,
-      title: "Project Gamma",
+      title: "Dumbsound",
       description: "A fully responsive and interactive web experience.",
       image: "/images/project3.jpg",
     },
     {
       id: 4,
-      title: "Project Delta",
+      title: "Tanri Abeng Apps",
       description: "Next.js App Router implementation with animations.",
       image: "/images/project4.jpg",
     },
