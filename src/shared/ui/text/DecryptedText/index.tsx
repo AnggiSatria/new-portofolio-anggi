@@ -1,11 +1,12 @@
+"use client";
 import { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { DecryptedTextProps } from "@/shared/interfaces";
 
 export default function DecryptedText({
   text,
-  speed = 50,
-  maxIterations = 10,
+  speed = 100,
+  maxIterations = 15,
   sequential = false,
   revealDirection = "start",
   useOriginalCharsOnly = false,
@@ -41,14 +42,7 @@ export default function DecryptedText({
           const offset = Math.floor(revealedSet.size / 2);
           const nextIndex =
             revealedSet.size % 2 === 0 ? middle + offset : middle - offset - 1;
-
-          if (
-            nextIndex >= 0 &&
-            nextIndex < textLength &&
-            !revealedSet.has(nextIndex)
-          ) {
-            return nextIndex;
-          }
+          if (!revealedSet.has(nextIndex)) return nextIndex;
           for (let i = 0; i < textLength; i++) {
             if (!revealedSet.has(i)) return i;
           }
@@ -67,46 +61,16 @@ export default function DecryptedText({
       originalText: string,
       currentRevealed: Set<number>
     ): string => {
-      if (useOriginalCharsOnly) {
-        const positions = originalText.split("").map((char, i) => ({
-          char,
-          isSpace: char === " ",
-          index: i,
-          isRevealed: currentRevealed.has(i),
-        }));
-
-        const nonSpaceChars = positions
-          .filter((p) => !p.isSpace && !p.isRevealed)
-          .map((p) => p.char);
-
-        for (let i = nonSpaceChars.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [nonSpaceChars[i], nonSpaceChars[j]] = [
-            nonSpaceChars[j],
-            nonSpaceChars[i],
+      return originalText
+        .split("")
+        .map((char, i) => {
+          if (char === " ") return " ";
+          if (currentRevealed.has(i)) return originalText[i];
+          return availableChars[
+            Math.floor(Math.random() * availableChars.length)
           ];
-        }
-
-        let charIndex = 0;
-        return positions
-          .map((p) => {
-            if (p.isSpace) return " ";
-            if (p.isRevealed) return originalText[p.index];
-            return nonSpaceChars[charIndex++];
-          })
-          .join("");
-      } else {
-        return originalText
-          .split("")
-          .map((char, i) => {
-            if (char === " ") return " ";
-            if (currentRevealed.has(i)) return originalText[i];
-            return availableChars[
-              Math.floor(Math.random() * availableChars.length)
-            ];
-          })
-          .join("");
-      }
+        })
+        .join("");
     };
 
     if (isHovering) {
@@ -180,9 +144,7 @@ export default function DecryptedText({
       observerOptions
     );
     const currentRef = containerRef.current;
-    if (currentRef) {
-      observer.observe(currentRef);
-    }
+    if (currentRef) observer.observe(currentRef);
 
     return () => {
       if (currentRef) observer.unobserve(currentRef);
@@ -204,23 +166,19 @@ export default function DecryptedText({
       {...hoverProps}
       {...props}
     >
-      <span className="sr-only">{displayText}</span>
+      {displayText.split("").map((char, index) => {
+        const isRevealedOrDone =
+          revealedIndices.has(index) || !isScrambling || !isHovering;
 
-      <span aria-hidden="true">
-        {displayText.split("").map((char, index) => {
-          const isRevealedOrDone =
-            revealedIndices.has(index) || !isScrambling || !isHovering;
-
-          return (
-            <span
-              key={index}
-              className={isRevealedOrDone ? className : encryptedClassName}
-            >
-              {char}
-            </span>
-          );
-        })}
-      </span>
+        return (
+          <span
+            key={index}
+            className={isRevealedOrDone ? className : encryptedClassName}
+          >
+            {char}
+          </span>
+        );
+      })}
     </motion.span>
   );
 }

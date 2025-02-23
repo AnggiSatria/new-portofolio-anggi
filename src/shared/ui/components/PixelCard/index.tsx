@@ -1,4 +1,5 @@
-import { useEffect, useRef } from "react";
+"use client";
+import { JSX, useEffect, useRef } from "react";
 
 class Pixel {
   width: number;
@@ -176,10 +177,10 @@ interface VariantConfig {
 
 export default function PixelCard({
   variant = "default",
-  gap,
-  speed,
-  colors,
-  noFocus,
+  gap = 0,
+  speed = 1500,
+  colors = "#0a0a0a",
+  noFocus = false,
   className = "",
   children,
 }: PixelCardProps): JSX.Element {
