@@ -1,11 +1,8 @@
 import DecryptedText from "@/shared/ui/text/DecryptedText";
-import { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
-interface Props {}
-
-const HeroSection: NextPage<Props> = ({}) => {
+const HeroSection = ({}) => {
   return (
     <div
       id="#hero"

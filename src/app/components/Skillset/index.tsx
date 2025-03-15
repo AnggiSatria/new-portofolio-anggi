@@ -1,9 +1,15 @@
-import { NextPage } from "next";
+interface DataType {
+  url: string;
+}
 
-interface Props {}
-
-const SkillSetSection: NextPage<Props> = ({}) => {
-  const data = [1, 2, 3, 4, 5, 6];
+const SkillSetSection = ({}) => {
+  const data: DataType[] = [
+    { url: "" },
+    { url: "" },
+    { url: "" },
+    { url: "" },
+    { url: "" },
+  ];
 
   return (
     <div className="flex w-full items-center flex-col gap-5">
@@ -12,7 +18,7 @@ const SkillSetSection: NextPage<Props> = ({}) => {
       </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-6 w-full max-w-6xl justify-center">
-        {data?.flatMap((res: any, idx: number) => {
+        {data?.flatMap((res, idx) => {
           return (
             <div
               key={idx}

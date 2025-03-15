@@ -50,7 +50,7 @@ interface SizeData {
 class X {
   // Private fields
   #config: XConfig;
-  #postprocessing: any;
+  #postprocessing?: any;
   #resizeObserver?: ResizeObserver;
   #intersectionObserver?: IntersectionObserver;
   #resizeTimer?: number;
@@ -667,17 +667,17 @@ function isInside(rect: DOMRect) {
   );
 }
 
-const { randFloat, randFloatSpread } = MathUtils;
-const F = new Vector3();
-const I = new Vector3();
-const O = new Vector3();
-const V = new Vector3();
-const B = new Vector3();
-const N = new Vector3();
-const _ = new Vector3();
-const j = new Vector3();
-const H = new Vector3();
-const T = new Vector3();
+// const { randFloat, randFloatSpread } = MathUtils;
+// const F = new Vector3();
+// const I = new Vector3();
+// const O = new Vector3();
+// const V = new Vector3();
+// const B = new Vector3();
+// const N = new Vector3();
+// const _ = new Vector3();
+// const j = new Vector3();
+// const H = new Vector3();
+// const T = new Vector3();
 
 /* =========================================================
    Class Z – Instanced Mesh for Spheres

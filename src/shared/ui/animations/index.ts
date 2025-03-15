@@ -1,2 +1,2 @@
 export * from "./Ribbons";
-export * from "./SplashCursor";
+// export * from "./SplashCursor";

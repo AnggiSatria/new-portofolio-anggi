@@ -12,7 +12,7 @@ export interface DecryptedTextProps {
   parentClassName?: string;
   encryptedClassName?: string;
   animateOn?: "hover" | "view";
-  [key: string]: any;
+  [key: string]: string | number | boolean | undefined;
 }
 
 export interface ASCIITextProps {
@@ -24,7 +24,7 @@ export interface ASCIITextProps {
   enableWaves?: boolean;
 }
 
-export interface VariableProximityProps {
+export interface VariableProximityProps<T = unknown> {
   label: string;
   fromFontVariationSettings: string;
   toFontVariationSettings: string;
@@ -34,5 +34,5 @@ export interface VariableProximityProps {
   className?: string;
   onClick?: () => void;
   style?: CSSProperties;
-  [key: string]: any;
+  extraProps?: T;
 }
