@@ -21,7 +21,7 @@ export default function ProjectSection() {
           <Link key={idx} href={project?.link}>
             <SpotlightCard
               key={project?.id}
-              className="custom-spotlight-card rounded-md p-4 flex flex-col items-center text-center shadow-md"
+              className="custom-spotlight-card rounded-md p-4 flex flex-col items-center text-center shadow-md h-full"
               spotlightColor="rgba(0, 229, 255, 0.2)"
             >
               <div
