@@ -4,7 +4,12 @@ import { NextPage } from "next";
 import Link from "next/link";
 
 async function getProjects(): Promise<IResponseGetProject[]> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/projects`, {
+  function getBaseUrl() {
+    if (typeof window !== "undefined") return ""; // Client Side
+    return process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"; // Server Side
+  }
+
+  const res = await fetch(`${getBaseUrl()}/api/projects`, {
     cache: "no-store",
   });
   return res.json();
