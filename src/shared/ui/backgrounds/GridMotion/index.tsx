@@ -35,7 +35,7 @@ const GridMotion: FC<GridMotionProps> = ({
       const baseDuration = 0.8; // Base duration for inertia
       const inertiaFactors = [0.6, 0.4, 0.3, 0.2]; // Different inertia for each row, outer rows slower
 
-      rowRefs.current.forEach((row, index) => {
+      rowRefs.current.forEach((row: any, index: number) => {
         if (row) {
           const direction = index % 2 === 0 ? 1 : -1;
           const moveAmount =
