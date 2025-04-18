@@ -12,4 +12,4 @@ export * from "./Particles";
 export * from "./ShapeBlur";
 export * from "./Squares";
 export * from "./Threads";
-export * from "./Waves";
+// export * from "./Waves";

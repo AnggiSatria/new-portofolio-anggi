@@ -12,7 +12,7 @@ export * from "./InfiniteMenu";
 export * from "./InfiniteScroll";
 // export * from "./Lanyard"
 // export * from "./Mansory"
-export * from "./PixelCard";
+// export * from "./PixelCard";
 export * from "./RollingGallery";
 export * from "./SpotlightCard";
 export * from "./Stack";
