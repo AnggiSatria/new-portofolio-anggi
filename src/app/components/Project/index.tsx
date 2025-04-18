@@ -1,22 +1,14 @@
+"use client";
+
 import { IResponseGetProject } from "@/shared/interfaces";
+import { useReadProjects } from "@/shared/service/projects";
 import SpotlightCard from "@/shared/ui/components/SpotlightCard";
-import { NextPage } from "next";
 import Link from "next/link";
 
-async function getProjects(): Promise<IResponseGetProject[]> {
-  function getBaseUrl() {
-    if (typeof window !== "undefined") return ""; // Client Side
-    return process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"; // Server Side
-  }
+export default function ProjectSection() {
+  const { data: dataProject } = useReadProjects();
 
-  const res = await fetch(`${getBaseUrl()}/api/projects`, {
-    cache: "no-store",
-  });
-  return res.json();
-}
-
-export default async function ProjectSection() {
-  const projects = await getProjects();
+  const projects = dataProject?.data;
 
   return (
     <div id="projects" className="flex w-full items-center flex-col gap-5">
