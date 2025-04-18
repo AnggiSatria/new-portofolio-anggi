@@ -8,7 +8,7 @@ import {
 } from "./fetcher";
 import { IRequestPostPutProject } from "@/shared/interfaces";
 
-export const createProject = () => {
+export const useCreateProject = () => {
   const mutations = useMutation({
     mutationFn: async (payload: IRequestPostPutProject) => postProject(payload),
     mutationKey: ["post-project"],
@@ -17,7 +17,7 @@ export const createProject = () => {
   return { mutations };
 };
 
-export const readProjects = () => {
+export const useReadProjects = () => {
   return useQuery({
     queryKey: ["read-projects"],
     queryFn: async () => await getProjects(),
@@ -28,7 +28,7 @@ export const readProjects = () => {
   });
 };
 
-export const readProjectById = (id: any) => {
+export const useReadProjectById = (id: any) => {
   return useQuery({
     queryKey: ["read-project-by-id", id],
     queryFn: async () => await getProjectById(id),
@@ -39,7 +39,7 @@ export const readProjectById = (id: any) => {
   });
 };
 
-export const updatedProject = () => {
+export const useUpdatedProject = () => {
   const mutations = useMutation({
     mutationFn: async ({
       payload,
@@ -54,7 +54,7 @@ export const updatedProject = () => {
   return { mutations };
 };
 
-export const deletedProject = () => {
+export const useDeletedProject = () => {
   const mutations = useMutation({
     mutationFn: async (payload: string) => deleteProject(payload),
     mutationKey: ["deleted-project"],

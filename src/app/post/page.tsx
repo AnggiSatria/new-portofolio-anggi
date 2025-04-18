@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useState } from "react";
 import {
-  createProject,
-  deletedProject,
-  readProjects,
+  useCreateProject,
+  useDeletedProject,
+  useReadProjects,
 } from "@/shared/service/projects";
+import Image from "next/image";
 
 export default function Home() {
   const [form, setForm] = useState({
@@ -16,9 +16,9 @@ export default function Home() {
     link: "",
   });
 
-  const { data: projectData, refetch: refetchProject } = readProjects();
-  const { mutations } = createProject();
-  const { mutations: deleteProject } = deletedProject();
+  const { data: projectData, refetch: refetchProject } = useReadProjects();
+  const { mutations } = useCreateProject();
+  const { mutations: deleteProject } = useDeletedProject();
 
   const projects = projectData?.data;
 
@@ -99,11 +99,17 @@ export default function Home() {
               </svg>
             </div>
 
-            <img
-              src={p?.image}
-              alt={p?.title}
-              className="w-full h-40 object-cover rounded"
-            />
+            <div className="flex h-40">
+              <Image
+                src={p?.image}
+                alt={p?.title}
+                width={160}
+                height={160}
+                className="w-full h-full object-cover rounded"
+                layout="responsive"
+              />
+            </div>
+
             <h2 className="text-xl font-semibold mt-2">{p?.title}</h2>
             <p>{p.description}</p>
             <a
