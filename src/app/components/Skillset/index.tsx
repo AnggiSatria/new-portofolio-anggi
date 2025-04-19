@@ -18,14 +18,14 @@ const SkillSetSection = ({}) => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-6 w-11/12 max-w-6xl justify-center">
         {skills?.flatMap((res: IResponseGetSkill, idx: number) => {
           return (
-            <div key={idx} className="flex max-w-32 h-32">
+            <div key={idx} className="flex w-32 h-32">
               <Image
                 src={res?.image}
                 layout="responsive"
                 width={128}
                 height={128}
                 alt={res?.id}
-                className="w-full h-full rounded-md"
+                className="w-full h-full rounded-md object-cover"
               />
             </div>
           );
