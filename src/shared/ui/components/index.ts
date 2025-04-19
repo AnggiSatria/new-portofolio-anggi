@@ -18,3 +18,5 @@ export * from "./SpotlightCard";
 export * from "./Stack";
 export * from "./Stepper";
 export * from "./TitleCard";
+export * from "./GooeyNav/GooeyNav";
+export * from "./MyEditor";

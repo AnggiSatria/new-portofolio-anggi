@@ -1,15 +1,13 @@
-interface DataType {
-  url: string;
-}
+"use client";
+
+import { IResponseGetSkill } from "@/shared/interfaces";
+import { useReadSkills } from "@/shared/service/skills";
+import Image from "next/image";
 
 const SkillSetSection = ({}) => {
-  const data: DataType[] = [
-    { url: "" },
-    { url: "" },
-    { url: "" },
-    { url: "" },
-    { url: "" },
-  ];
+  const { data: dataSkills } = useReadSkills();
+
+  const skills = dataSkills?.data;
 
   return (
     <div className="flex w-full items-center flex-col gap-5">
@@ -17,14 +15,19 @@ const SkillSetSection = ({}) => {
         SKILL SET
       </h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-6 w-full max-w-6xl justify-center">
-        {data?.flatMap((res, idx) => {
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-6 w-11/12 max-w-6xl justify-center">
+        {skills?.flatMap((res: IResponseGetSkill, idx: number) => {
           return (
-            <div
-              key={idx}
-              className="flex max-w-32 h-32"
-              style={{ backgroundImage: `url(${res?.url})` }}
-            ></div>
+            <div key={idx} className="flex max-w-32 h-32">
+              <Image
+                src={res?.image}
+                layout="responsive"
+                width={128}
+                height={128}
+                alt={res?.id}
+                className="w-full h-full rounded-md"
+              />
+            </div>
           );
         })}
       </div>

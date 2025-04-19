@@ -29,8 +29,11 @@
     "postprocessing": "^6.36.7",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-loading-skeleton": "^3.5.0",
+    "react-quill-new": "^3.4.6",
     "save-dev": "0.0.1-security",
-    "three": "^0.173.0"
+    "three": "^0.167.1",
+    "zustand": "^5.0.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

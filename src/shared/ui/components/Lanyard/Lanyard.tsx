@@ -1,7 +1,7 @@
 // /* eslint-disable react/no-unknown-property */
 // "use client";
 // import { useEffect, useRef, useState } from "react";
-// import { Canvas, extend, useThree, useFrame } from "@react-three/fiber";
+// import { Canvas, extend, useFrame } from "@react-three/fiber";
 // import {
 //   useGLTF,
 //   useTexture,
@@ -20,16 +20,7 @@
 // import { MeshLineGeometry, MeshLineMaterial } from "meshline";
 // import * as THREE from "three";
 
-// import cardGLB from "./card.glb";
-// import lanyard from "./lanyard.png";
-
-// extend({
-//   MeshLineGeometry,
-//   MeshLineMaterial,
-//   group: THREE.Group,
-//   mesh: THREE.Mesh,
-//   meshPhysicalMaterial: THREE.MeshPhysicalMaterial,
-// });
+// extend({ MeshLineGeometry, MeshLineMaterial });
 
 // interface LanyardProps {
 //   position?: [number, number, number];
@@ -119,9 +110,8 @@
 //     linearDamping: 4,
 //   };
 
-//   const { nodes, materials } = useGLTF(cardGLB) as any;
-//   const texture = useTexture(lanyard.src);
-//   const { width, height } = useThree((state) => state.size);
+//   const { nodes, materials } = useGLTF("/models/card.glb") as any;
+//   const texture = useTexture("/assets/waybook.png");
 //   const [curve] = useState(
 //     () =>
 //       new THREE.CatmullRomCurve3([
@@ -133,6 +123,22 @@
 //   );
 //   const [dragged, drag] = useState<false | THREE.Vector3>(false);
 //   const [hovered, hover] = useState(false);
+
+//   const [isSmall, setIsSmall] = useState<boolean>(() => {
+//     if (typeof window !== "undefined") {
+//       return window.innerWidth < 1024;
+//     }
+//     return false;
+//   });
+
+//   useEffect(() => {
+//     const handleResize = (): void => {
+//       setIsSmall(window.innerWidth < 1024);
+//     };
+
+//     window.addEventListener("resize", handleResize);
+//     return (): void => window.removeEventListener("resize", handleResize);
+//   }, []);
 
 //   useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 1]);
 //   useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 1]);
@@ -277,7 +283,7 @@
 //         <meshLineMaterial
 //           color="white"
 //           depthTest={false}
-//           resolution={[width, height]}
+//           resolution={isSmall ? [1000, 2000] : [1000, 1000]}
 //           useMap
 //           map={texture}
 //           repeat={[-4, 1]}
