@@ -8,9 +8,9 @@ import GooeyNav from "@/shared/ui/components/GooeyNav/GooeyNav";
 import SpotlightCard from "@/shared/ui/components/SpotlightCard";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import moment from "moment";
 
 export default function ProjectSection() {
   const { data: dataProject, isLoading: loadingProject } = useReadProjects();
@@ -29,6 +29,27 @@ export default function ProjectSection() {
   const hastag = items?.[activeDecision]?.value;
 
   const loadingSkeleton = [1, 2, 3, 4];
+
+  const sortedData = experience?.sort(
+    (a: any, b: any) =>
+      moment(a.startDate).valueOf() - moment(b.startDate).valueOf()
+  );
+
+  const getDurationLabel = (startDate: string, endDate: string | null) => {
+    if (endDate) {
+      const duration = moment.duration(moment(endDate).diff(moment(startDate)));
+      const years = duration.years();
+      const months = duration.months();
+
+      // Format: "2 yrs 3 mos"
+      let label = "";
+      if (years > 0) label += `${years} yr${years > 1 ? "s" : ""} `;
+      if (months > 0) label += `${months} mo${months > 1 ? "s" : ""}`;
+      return label.trim();
+    } else {
+      return `(${moment(startDate).fromNow()})`;
+    }
+  };
 
   return (
     <div id={hastag} className="flex w-full items-center flex-col gap-5">
@@ -66,7 +87,7 @@ export default function ProjectSection() {
                   </div>
                 );
               })
-            : experience?.map((res: any, idx: number) => {
+            : sortedData?.map((res: any, idx: number) => {
                 return (
                   <div
                     key={idx}
@@ -90,7 +111,12 @@ export default function ProjectSection() {
                         {res?.company}
                       </div>
                       <div className="flex w-full items-center h-4 text-black">
-                        {res?.date}
+                        {`${moment(res?.startDate).format("MMM YYYY")} - ${
+                          res?.endDate === null
+                            ? "Now"
+                            : moment(res?.endDate).format("MMM YYYY")
+                        }`}{" "}
+                        {getDurationLabel(res?.startDate, res?.endDate)}
                       </div>
 
                       <div
