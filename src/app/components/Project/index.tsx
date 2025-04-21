@@ -95,7 +95,7 @@ export default function ProjectSection() {
                   >
                     <div className="flex w-20 xl:w-1/12 rounded-md h-20 bg-[#ccc] shadow-md">
                       <Image
-                        src="/assets/company.png"
+                        src="/assets/company-not-found.png"
                         layout="responsive"
                         width={80}
                         height={80}
