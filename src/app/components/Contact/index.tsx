@@ -18,7 +18,7 @@ export default function ContactSection() {
             className="flex items-center gap-2 px-6 py-3 bg-blue-500 rounded-lg hover:bg-blue-600 transition"
           >
             <Mail size={20} />
-            Email Saya
+            Emailed Me
           </Link>
 
           <Link
