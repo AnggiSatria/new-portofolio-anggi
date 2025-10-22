@@ -42,7 +42,7 @@ const HeroSection = ({}) => {
           Download CV
         </a>
         <Link
-          href="#projects"
+          href="/dashboard"
           className="z-50 cursor-pointer px-6 py-3 bg-gray-800 hover:bg-gray-700 text-white rounded-lg shadow-md transition"
         >
           See More

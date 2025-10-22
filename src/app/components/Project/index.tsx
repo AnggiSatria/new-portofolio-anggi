@@ -41,7 +41,6 @@ export default function ProjectSection() {
       const years = duration.years();
       const months = duration.months();
 
-      // Format: "2 yrs 3 mos"
       let label = "";
       if (years > 0) label += `${years} yr${years > 1 ? "s" : ""} `;
       if (months > 0) label += `${months} mo${months > 1 ? "s" : ""}`;

@@ -19,6 +19,7 @@ export interface GooeyNavProps {
   minDistance?: number;
   maxDistance?: number;
   maxRotate?: number;
+  isDashboard?: boolean;
 }
 
 const GooeyNav: React.FC<GooeyNavProps> = ({
@@ -30,6 +31,7 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
   timeVariance = 300,
   colors = [1, 2, 3, 1, 2, 3, 1, 4],
   initialActiveIndex = 0,
+  isDashboard = false,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLUListElement>(null);
@@ -313,14 +315,21 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
           }
         `}
       </style>
-      <div className="relative h-full items-center" ref={containerRef}>
+      <div
+        className="relative w-full h-full flex items-center justify-center"
+        ref={containerRef}
+      >
         <nav
-          className="flex relative h-full items-center gap-3"
+          className={`relative flex w-full items-center gap-3  ${
+            isDashboard ? "flex-col justify-start" : "justify-center"
+          }`}
           style={{ transform: "translate3d(0,0,0.01px)" }}
         >
           <ul
             ref={navRef}
-            className="w-full flex gap-8 items-center p-0 m-0 relative z-[3] h-full "
+            className={`w-full flex gap-8 items-center justify-between p-0 m-0 relative z-[3] ${
+              isDashboard ? "flex-col h-auto" : "h-full"
+            }`}
             style={{
               color: "white",
               textShadow: "0 1px 1px hsl(205deg 30% 10% / 0.2)",
@@ -329,9 +338,11 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
             {items.map((item, index) => (
               <li
                 key={index}
-                className={`py-[0.6em] px-[1em] rounded-full relative cursor-pointer transition-[background-color_color_box-shadow] duration-300 ease shadow-[0_0_0.5px_1.5px_transparent] text-white h-full flex items-center font-bold !mr-3 ${
-                  activeIndex === index ? "active" : ""
-                }`}
+                className={`py-[0.6em] px-[1em] rounded-full relative cursor-pointer transition-[background-color_color_box-shadow] duration-300 ease shadow-[0_0_0.5px_1.5px_transparent] text-white flex items-center font-bold !mr-3 ${
+                  isDashboard
+                    ? "h-10 w-full text-center justify-center"
+                    : "h-full"
+                } ${activeIndex === index ? "active" : ""}`}
                 onClick={(e) => handleClick(e, index)}
               >
                 <a
