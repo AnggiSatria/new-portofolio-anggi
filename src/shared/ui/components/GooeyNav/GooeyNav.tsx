@@ -1,5 +1,6 @@
-import { useActiveIndexStore } from "@/shared/store/decisionState";
-import React, { useRef, useEffect, useState } from "react";
+"use client";
+import React, { useRef, useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 interface GooeyNavItem {
   label: string;
@@ -14,7 +15,6 @@ export interface GooeyNavProps {
   particleR?: number;
   timeVariance?: number;
   colors?: number[];
-  initialActiveIndex?: number;
   pCount?: number;
   minDistance?: number;
   maxDistance?: number;
@@ -30,15 +30,15 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
   particleR = 100,
   timeVariance = 300,
   colors = [1, 2, 3, 1, 2, 3, 1, 4],
-  initialActiveIndex = 0,
   isDashboard = false,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLUListElement>(null);
   const filterRef = useRef<HTMLSpanElement>(null);
   const textRef = useRef<HTMLSpanElement>(null);
-  const { activeDecision, setActiveDecision } = useActiveIndexStore();
-  const [activeIndex, setActiveIndex] = useState<number>(initialActiveIndex);
+  const pathname = usePathname();
+
+  // Utility untuk efek partikel
   const noise = (n = 1) => n / 2 - Math.random() * n;
   const getXY = (
     distance: number,
@@ -55,7 +55,7 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
     d: [number, number],
     r: number
   ) => {
-    let rotate = noise(r / 10);
+    const rotate = noise(r / 10);
     return {
       start: getXY(d[0], particleCount - i, particleCount),
       end: getXY(d[1] + noise(7), particleCount - i, particleCount),
@@ -89,9 +89,7 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
         point.classList.add("point");
         particle.appendChild(point);
         element.appendChild(particle);
-        requestAnimationFrame(() => {
-          element.classList.add("active");
-        });
+        requestAnimationFrame(() => element.classList.add("active"));
         setTimeout(() => {
           try {
             element.removeChild(particle);
@@ -100,6 +98,8 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
       }, 30);
     }
   };
+
+  // Update posisi highlight effect
   const updateEffectPosition = (element: HTMLElement) => {
     if (!containerRef.current || !filterRef.current || !textRef.current) return;
     const containerRect = containerRef.current.getBoundingClientRect();
@@ -114,64 +114,22 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
     Object.assign(textRef.current.style, styles);
     textRef.current.innerText = element.innerText;
   };
-  const handleClick = (e: React.MouseEvent<HTMLLIElement>, index: number) => {
-    const liEl = e.currentTarget;
-    if (activeIndex === index) return;
-    setActiveIndex(index);
-    setActiveDecision(index);
-    updateEffectPosition(liEl);
-    if (filterRef.current) {
-      const particles = filterRef.current.querySelectorAll(".particle");
-      particles.forEach((p) => filterRef.current!.removeChild(p));
-    }
-    if (textRef.current) {
-      textRef.current.classList.remove("active");
-      void textRef.current.offsetWidth;
-      textRef.current.classList.add("active");
-    }
-    if (filterRef.current) {
-      makeParticles(filterRef.current);
-    }
-  };
-  const handleKeyDown = (
-    e: React.KeyboardEvent<HTMLAnchorElement>,
-    index: number
-  ) => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      const liEl = e.currentTarget.parentElement;
-      if (liEl) {
-        handleClick(
-          { currentTarget: liEl } as React.MouseEvent<HTMLLIElement>,
-          index
-        );
-      }
-    }
-  };
+
+  // Set posisi highlight otomatis berdasarkan URL aktif
   useEffect(() => {
-    if (!navRef.current || !containerRef.current) return;
-    const activeLi = navRef.current.querySelectorAll("li")[
-      activeIndex
-    ] as HTMLElement;
+    if (!navRef.current) return;
+    const activeLi = Array.from(navRef.current.querySelectorAll("li")).find(
+      (li) => li.classList.contains("active")
+    ) as HTMLElement;
     if (activeLi) {
       updateEffectPosition(activeLi);
       textRef.current?.classList.add("active");
+      makeParticles(filterRef.current!);
     }
-    const resizeObserver = new ResizeObserver(() => {
-      const currentActiveLi = navRef.current?.querySelectorAll("li")[
-        activeIndex
-      ] as HTMLElement;
-      if (currentActiveLi) {
-        updateEffectPosition(currentActiveLi);
-      }
-    });
-    resizeObserver.observe(containerRef.current);
-    return () => resizeObserver.disconnect();
-  }, [activeIndex, activeDecision]);
+  }, [pathname]);
 
   return (
     <>
-      {/* This effect is quite difficult to recreate faithfully using Tailwind, so a style tag is a necessary workaround */}
       <style>
         {`
           :root {
@@ -255,10 +213,6 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
               opacity: 1;
               animation-timing-function: ease;
             }
-            85% {
-              transform: rotate(calc(var(--rotate) * 0.66)) translate(calc(var(--end-x)), calc(var(--end-y)));
-              opacity: 1;
-            }
             100% {
               transform: rotate(calc(var(--rotate) * 1.2)) translate(calc(var(--end-x) * 0.5), calc(var(--end-y) * 0.5));
               opacity: 1;
@@ -268,20 +222,11 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
             0% {
               transform: scale(0);
               opacity: 0;
-              animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45);
             }
             25% {
               transform: scale(calc(var(--scale) * 0.25));
             }
-            38% {
-              opacity: 1;
-            }
             65% {
-              transform: scale(var(--scale));
-              opacity: 1;
-              animation-timing-function: ease;
-            }
-            85% {
               transform: scale(var(--scale));
               opacity: 1;
             }
@@ -315,15 +260,15 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
           }
         `}
       </style>
+
       <div
-        className="relative w-full h-full flex items-center justify-center"
         ref={containerRef}
+        className="relative w-full h-full flex items-center justify-center"
       >
         <nav
-          className={`relative flex w-full items-center gap-3  ${
+          className={`relative flex w-full items-center gap-3 ${
             isDashboard ? "flex-col justify-start" : "justify-center"
           }`}
-          style={{ transform: "translate3d(0,0,0.01px)" }}
         >
           <ul
             ref={navRef}
@@ -335,27 +280,29 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
               textShadow: "0 1px 1px hsl(205deg 30% 10% / 0.2)",
             }}
           >
-            {items.map((item, index) => (
-              <li
-                key={index}
-                className={`py-[0.6em] px-[1em] rounded-full relative cursor-pointer transition-[background-color_color_box-shadow] duration-300 ease shadow-[0_0_0.5px_1.5px_transparent] text-white flex items-center font-bold !mr-3 ${
-                  isDashboard
-                    ? "h-10 w-full text-center justify-center"
-                    : "h-full"
-                } ${activeIndex === index ? "active" : ""}`}
-                onClick={(e) => handleClick(e, index)}
-              >
-                <a
-                  href={item.href}
-                  onKeyDown={(e) => handleKeyDown(e, index)}
-                  className="outline-none font-bold"
+            {items.map((item, index) => {
+              const isActive =
+                pathname === item.href ||
+                (item.href !== "/dashboard" && pathname.startsWith(item.href));
+
+              return (
+                <li
+                  key={index}
+                  className={`py-[0.6em] px-[1em] rounded-full relative cursor-pointer transition-all duration-300 ease text-white flex items-center font-bold !mr-3 ${
+                    isDashboard
+                      ? "h-10 w-full text-center justify-center"
+                      : "h-full"
+                  } ${isActive ? "active" : ""}`}
                 >
-                  {item.label}
-                </a>
-              </li>
-            ))}
+                  <a href={item.href} className="outline-none font-bold">
+                    {item.label}
+                  </a>
+                </li>
+              );
+            })}
           </ul>
         </nav>
+
         <span className="effect filter" ref={filterRef} />
         <span className="effect text" ref={textRef} />
       </div>
