@@ -68,3 +68,149 @@ export interface IRequestDeleteExperience {
 export interface IRequestDeleteResponse {
   message: string;
 }
+
+// 📚 EDUCATION INTERFACES
+// ======================================================
+
+// GET - Response
+export interface IResponseGetEducationGet {
+  id: string;
+  institution: string;
+  degree: string;
+  field: string;
+  startDate: string; // ISO Date string
+  endDate?: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// POST - Request
+export interface IRequestEducationPost {
+  institution: string;
+  degree: string;
+  field: string;
+  startDate: string; // ISO Date string
+  endDate?: string | null;
+}
+
+// PUT - Request
+export interface IRequestEducationPut {
+  id: string;
+  institution?: string;
+  degree?: string;
+  field?: string;
+  startDate?: string;
+  endDate?: string | null;
+}
+
+// DELETE - Response
+export interface IResponseEducationDelete {
+  message: string;
+  deletedId: string;
+}
+
+// ======================================================
+// 🎓 CERTIFICATE INTERFACES
+// ======================================================
+
+// GET - Response
+export interface IResponseGetCertificateGet {
+  id: string;
+  title: string;
+  issuer: string;
+  issueDate: string; // ISO Date string
+  image: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// POST - Request
+export interface IRequestCertificatePost {
+  title: string;
+  issuer: string;
+  issueDate: string;
+  image: string;
+}
+
+// PUT - Request
+export interface IRequestCertificatePut {
+  id: string;
+  title?: string;
+  issuer?: string;
+  issueDate?: string;
+  image?: string;
+}
+
+// DELETE - Response
+export interface IResponseCertificateDelete {
+  message: string;
+  deletedId: string;
+}
+
+export interface IPaginationMeta {
+  total: number;
+  page: number;
+  perPage: number;
+}
+
+export interface IResponseGetEducationList {
+  data: IResponseGetEducationGet[];
+  meta: IPaginationMeta;
+}
+
+// ===============================================
+// 🎓 CERTIFICATE INTERFACES
+// ===============================================
+
+// GET - Response
+export interface IResponseGetCertificateGet {
+  id: string;
+  title: string;
+  issuer: string;
+  issueDate: string; // ISO format date
+  image: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// GET (List) - Response
+export interface IResponseGetCertificateList {
+  data: IResponseGetCertificateGet[];
+  message?: string;
+  total?: number;
+}
+
+// POST - Request
+export interface IRequestCertificatePost {
+  title: string;
+  issuer: string;
+  issueDate: string;
+  image: string;
+}
+
+// POST - Response
+export interface IResponseCertificatePost {
+  message: string;
+  data: IResponseGetCertificateGet;
+}
+
+// PUT - Request
+export interface IRequestCertificatePut {
+  id: string;
+  title?: string;
+  issuer?: string;
+  issueDate?: string;
+  image?: string;
+}
+
+// PUT - Response
+export interface IResponseCertificatePut {
+  message: string;
+  data: IResponseGetCertificateGet;
+}
+
+// DELETE - Response
+export interface IResponseCertificateDelete {
+  message: string;
+  deletedId: string;
+}

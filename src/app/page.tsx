@@ -1,8 +1,5 @@
 import Particles from "@/shared/ui/backgrounds/Particles";
 import HeroSection from "./components/Hero";
-import ProjectSection from "./components/Project";
-import SkillSetSection from "./components/Skillset";
-import ContactSection from "./components/Contact";
 
 export default function Home() {
   return (
@@ -22,9 +19,6 @@ export default function Home() {
 
       <div className="flex w-full h-full flex-col items-center justify-center mt-[100px] gap-y-48">
         <HeroSection />
-        <ProjectSection />
-        <SkillSetSection />
-        <ContactSection />
       </div>
     </section>
   );
