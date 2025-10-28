@@ -3,10 +3,15 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export async function GET(_: Request, { params }: { params: { id: string } }) {
+interface Params {
+  params: Promise<{ id: string }>; // ✅ harus Promise di Next 15+
+}
+
+export async function GET(_: Request, { params }: Params) {
+  const { id } = await params; // ✅ tunggu params
   try {
     const cert = await prisma.certificate.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
     if (!cert)
       return NextResponse.json(
@@ -22,14 +27,12 @@ export async function GET(_: Request, { params }: { params: { id: string } }) {
   }
 }
 
-export async function PUT(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(req: Request, { params }: Params) {
+  const { id } = await params;
   try {
     const data = await req.json();
     const updated = await prisma.certificate.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         title: data.title,
         issuer: data.issuer,
@@ -46,13 +49,11 @@ export async function PUT(
   }
 }
 
-export async function DELETE(
-  _: Request,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(_: Request, { params }: Params) {
+  const { id } = await params;
   try {
     await prisma.certificate.delete({
-      where: { id: params.id },
+      where: { id },
     });
     return NextResponse.json({ message: "Certificate deleted successfully" });
   } catch (error) {

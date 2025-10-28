@@ -3,16 +3,21 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export async function GET(_: Request, { params }: { params: { id: string } }) {
+export async function GET(
+  req: Request,
+  context: Awaited<{ params: Promise<{ id: string }> }>
+) {
+  const { id } = await context.params; // ✅ params harus di-await
   try {
     const education = await prisma.education.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
-    if (!education)
+    if (!education) {
       return NextResponse.json(
         { error: "Education not found" },
         { status: 404 }
       );
+    }
     return NextResponse.json(education);
   } catch (error) {
     return NextResponse.json(
@@ -24,12 +29,13 @@ export async function GET(_: Request, { params }: { params: { id: string } }) {
 
 export async function PUT(
   req: Request,
-  { params }: { params: { id: string } }
+  context: Awaited<{ params: Promise<{ id: string }> }>
 ) {
+  const { id } = await context.params;
   try {
     const data = await req.json();
     const updated = await prisma.education.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         institution: data.institution,
         degree: data.degree,
@@ -48,12 +54,13 @@ export async function PUT(
 }
 
 export async function DELETE(
-  _: Request,
-  { params }: { params: { id: string } }
+  req: Request,
+  context: Awaited<{ params: Promise<{ id: string }> }>
 ) {
+  const { id } = await context.params;
   try {
     await prisma.education.delete({
-      where: { id: params.id },
+      where: { id },
     });
     return NextResponse.json({ message: "Education deleted successfully" });
   } catch (error) {
