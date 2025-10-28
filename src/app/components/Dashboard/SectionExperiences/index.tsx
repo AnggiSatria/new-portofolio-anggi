@@ -84,8 +84,8 @@ export default function ExpComp() {
                   key={idx}
                   className="inline-flex w-full h-fit bg-[#0A0A0A] rounded-md flex-col gap-3 p-5"
                 >
-                  <div className="flex w-full h-[60px] gap-3">
-                    <div className="flex w-[60px] h-full">
+                  <div className="flex w-full min-h-[60px] gap-3">
+                    <div className="flex w-[80px] md:w-[60px] h-full">
                       <Image
                         src="/assets/company-not-found.png"
                         layout="responsive"
@@ -96,7 +96,7 @@ export default function ExpComp() {
                       />
                     </div>
 
-                    <div className="flex flex-col gap-1.5">
+                    <div className="flex-1 flex h-fit flex-col gap-1.5">
                       <h4 className="flex w-full h-1/2 font-bold items-center hover:underline hover:cursor-pointer">
                         {res?.title}
                       </h4>

@@ -266,13 +266,13 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
         className="relative w-full h-full flex items-center justify-center"
       >
         <nav
-          className={`relative flex w-full items-center gap-3 ${
+          className={`relative flex w-full items-center gap-3 overflow-hidden ${
             isDashboard ? "flex-col justify-start" : "justify-center"
           }`}
         >
           <ul
             ref={navRef}
-            className={`w-full flex gap-8 items-center justify-between p-0 m-0 relative z-[3] ${
+            className={`w-full flex gap-8 items-center justify-between p-0 m-0 relative  z-[3] ${
               isDashboard ? "flex-col h-auto" : "h-full"
             }`}
             style={{
@@ -285,6 +285,8 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
                 pathname === item.href ||
                 (item.href !== "/dashboard" && pathname.startsWith(item.href));
 
+              const isExit = item.href === "/";
+
               return (
                 <li
                   key={index}
@@ -292,7 +294,7 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
                     isDashboard
                       ? "h-10 w-full text-center justify-center"
                       : "h-full"
-                  } ${isActive ? "active" : ""}`}
+                  } ${isActive && !isExit ? "active" : ""}`}
                 >
                   <a href={item.href} className="outline-none font-bold">
                     {item.label}
