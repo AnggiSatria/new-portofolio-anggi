@@ -35,7 +35,7 @@ const HeroSection = ({}) => {
 
       <div className="mt-6 flex gap-4 z-50">
         <a
-          href="/assets/CV_Anggi_Satria.pdf"
+          href="/assets/CV_Anggi_Satria_ATS.pdf"
           className="z-50 cursor-pointer px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow-md transition"
           download
         >
